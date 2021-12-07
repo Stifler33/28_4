@@ -1,0 +1,6 @@
+vova 5
+inna 7
+grisha 6
+david 4
+shrek 5
+fiona 3
