@@ -36,10 +36,10 @@ void kitchen(){
     }
 #define NUM_ORDER itTurn->first
 #define DISH itTurn->second
-    //turn[numberOrder] = dish;
     cout << "kitchen: " << "accepted order " << NUM_ORDER << " " << DISH << endl;
-    timeSrand();
-    this_thread::sleep_for(chrono::seconds(randMinMax(5, 15)));
+    int delay = randMinMax(5, 15);
+    //cout << "delay kitchen " << delay << endl;
+    this_thread::sleep_for(chrono::seconds(delay));
     cout << "kitchen: " << "ready order " << NUM_ORDER << " " << DISH << endl;
     if (orderCourier_access.try_lock()) {
         cout << "kitchen: " << "order " << NUM_ORDER << " conveyed courier\n" << endl;
@@ -60,14 +60,14 @@ void kitchen(){
         kitchen();
     }else delivery_access.unlock();
 }
-mutex kitchen_access;
 
 void order(){
     while(!delivery_access.try_lock());
     if (countDelivery < 10) {
         delivery_access.unlock();
-        timeSrand();
-        this_thread::sleep_for(chrono::seconds(randMinMax(5, 10)));
+        int delay = randMinMax(5, 10);
+        //cout << "delay order " << delay << endl;
+        this_thread::sleep_for(chrono::seconds(delay));
         countOrder++;
         string menu[] = {"pizza", "salad", "soup", "steak", "sushi"};
         string dish = menu[randNum(5)];
@@ -85,7 +85,6 @@ int main(){
     thread th_Kitchen(kitchen);
     th_Kitchen.detach();
     order();
-    //this_thread::sleep_for(chrono::seconds(100));
     return 0;
 }
 
